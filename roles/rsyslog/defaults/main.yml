@@ -1,0 +1,4 @@
+---
+rsyslog_ssl: true
+rsyslog_crt: /etc/ssl/certs/rsyslog.crt
+rsyslog_remote: false

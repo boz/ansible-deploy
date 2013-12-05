@@ -1,0 +1,12 @@
+---
+- name: install rsyslog
+  apt: name=rsyslog
+
+- name: install crt
+  copy: src=syslog.crt dest={{rsyslog_crt}}
+  when: rsyslog_ssl
+
+- name: install rsyslog.conf
+  template: src=rsyslog.conf.j2 dest=/etc/rsyslog.conf
+  notify:
+    - restart rsyslog

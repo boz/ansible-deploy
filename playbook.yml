@@ -1,0 +1,23 @@
+---
+- hosts: all
+
+  roles:
+    - common
+    - postgres-server
+    - rsyslog
+
+  tasks:
+    - name: install common packages
+      action: apt name={{item}} state=installed
+      with_items:
+        - supervisor
+        - build-essential
+        - nginx-full
+        - redis-server
+        - ruby1.9.3
+        - libpq-dev
+
+    - name: install common gems
+      action: gem name={{item}}
+      with_items:
+        - bundler

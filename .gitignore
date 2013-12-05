@@ -1,0 +1,7 @@
+vagrant_ansible_*
+.vagrant
+
+## vim
+*~
+*.swp
+*.swo
