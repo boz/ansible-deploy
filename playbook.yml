@@ -1,5 +1,11 @@
 ---
-- hosts: all
+- hosts: default
+  vars:
+    postgresql_databases:
+      - name: testapp_1
+        password: testapp_1_password
+      - name: testapp_2
+        password: testapp_2_password
 
   roles:
     - common

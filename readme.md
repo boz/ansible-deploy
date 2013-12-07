@@ -35,3 +35,9 @@ vagrant provision
 ```shell
 vagrant destroy -f
 ```
+
+# Notes
+find all of the variables on the host
+```shell
+ansible all -m setup -i vagrant_ansible_inventory_default --user=vagrant --private-key=~/.vagrant.d/insecure_private_key
+```

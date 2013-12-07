@@ -38,3 +38,12 @@
     group={{postgres_server_user}}
   notify:
     - restart postgresql
+
+- name: install pg_hba.conf
+  template:
+    src=pg_hba.conf.j2
+    dest={{postgres_server_confdir}}/pg_hba.conf
+    owner={{postgres_server_user}}
+    group={{postgres_server_user}}
+  notify:
+    - restart postgresql

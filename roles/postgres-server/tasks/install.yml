@@ -10,7 +10,7 @@
 
 - name: install postgres apt repository
   apt_repository:
-    repo="deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main"
+    repo="deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_lsb.codename}}-pgdg main"
     state=present
   register: postgres_repository_added
 
@@ -20,3 +20,6 @@
 
 - name: install postgresql
   apt: name=postgresql-9.3
+
+- name: install psycopg2
+  apt: name=python-psycopg2
