@@ -1,0 +1,23 @@
+---
+postgres_server_user:    postgres
+
+# postgresql.conf.j2
+postgres_server_confdir: "/etc/postgresql/9.3/main"
+postgres_server_datadir: "/var/lib/postgresql/9.3/main"
+postgres_server_pidfile: "/var/run/postgresql/9.3-main.pid"
+
+# postgresql.conf.connections.j2
+postgres_server_listen_addresses: 'localhost'
+postgres_server_port: 5432
+
+# postgresql.conf.resource-usage.j2
+# postgresql.conf.wal.j2
+# postgresql.conf.replication.j2
+# postgresql.conf.tuning.j2
+# postgresql.conf.logging.j2
+# postgresql.conf.statistics.j2
+# postgresql.conf.autovacuum.j2
+# postgresql.conf.client.j2
+# postgresql.conf.lock.j2
+# postgresql.conf.compat.j2
+# postgresql.conf.error.j2

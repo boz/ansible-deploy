@@ -1,22 +1,3 @@
 ---
-- name: install pycurl
-  apt: name=python-pycurl
-
-- name: install postgres apt key
-  apt_key:
-    url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
-    key=0xACCC4CF8
-    state=present
-
-- name: install postgres apt repository
-  apt_repository:
-    repo="deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main"
-    state=present
-  register: postgres_repository_added
-
-- name: update apt cache to include new repository
-  apt: update_cache=yes
-  when: postgres_repository_added|changed
-
-- name: install postgresql
-  apt: name=postgresql-9.3
+- include: install.yml
+- include: config.yml
