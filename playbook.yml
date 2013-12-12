@@ -11,6 +11,7 @@
     - common
     - postgres-server
     - rsyslog
+    - redis
 
   tasks:
     - name: install common packages
@@ -19,7 +20,6 @@
         - supervisor
         - build-essential
         - nginx-full
-        - redis-server
         - ruby1.9.3
         - libpq-dev
 

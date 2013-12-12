@@ -11,12 +11,6 @@
 - name: install postgres apt repository
   apt_repository:
     repo="deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_lsb.codename}}-pgdg main"
-    state=present
-  register: postgres_repository_added
-
-- name: update apt cache to include new repository
-  apt: update_cache=yes
-  when: postgres_repository_added|changed
 
 - name: install postgresql
   apt: name=postgresql-9.3
