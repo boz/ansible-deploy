@@ -1,0 +1,58 @@
+---
+- name: install git
+  apt: name=git
+
+- name: create deploy user
+  user: name=deploy state=present shell=/bin/bash
+
+- name: install deploy ssh keys
+  authorized_key: user=deploy key="{{lookup('file',item)}}"
+  with_fileglob:
+    - "{{inventory_dir}}/files/public_keys/deploy/*.pub"
+
+- name: create base directories
+  file: path={{app_dir}} state=directory
+
+- name: create application directories
+  file:
+    path={{app_dir}}/{{item[0].name}}/{{item[1]}} state=directory
+  with_nested:
+    - applications
+    - ['bin', 'shared', 'releases']
+
+- name: create git ssh script
+  copy: src=git-ssh.sh dest={{app_dir}}/{{item.name}}/bin/git-ssh.sh
+  with_items: applications
+
+- name: copy ssh private key
+  copy: src={{inventory_dir}}/files/private_keys/{{item.deploy_key}}
+       dest={{app_dir}}/{{item.name}}/bin/deploy.key
+  with_items: applications
+  when: item.deploy_key is defined
+
+- name: get head revision
+  raw:  GIT_SSH={{app_dir}}/{{item.name}}/bin/git-ssh.sh git ls-remote "{{item.repo.source}}" "{{item.repo.branch}}" 2>/dev/null | grep -v "Permanently added" | cut -f1
+  register: application_revisions
+  with_items: applications
+
+- name: checkout head revision
+  git:
+    depth=1
+    repo={{item.item.repo.source}}
+    dest={{app_dir}}/{{item.item.name}}/releases/{{item.stdout}}
+    version={{item.stdout}}
+    key_file={{app_dir}}/{{item.item.name}}/bin/deploy.key
+  with_items: application_revisions.results
+
+- name: create pending release link
+  file: state=link
+        force=yes
+        src={{app_dir}}/{{item.item.name}}/releases/{{item.stdout}}
+        dest={{app_dir}}/{{item.item.name}}/releases/pending
+  with_items: application_revisions.results
+
+- name: create VERSION file
+  copy: content={{item.stdout}}
+        dest={{app_dir}}/{{item.item.name}}/releases/pending/VERSION
+  with_items: application_revisions.results
+

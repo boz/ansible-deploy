@@ -1,0 +1,65 @@
+upstream {{ item.name }} {
+  server localhost:{{item.web.port}};
+}
+
+{% for vhost in item.vhosts %}
+  server {
+    listen {{ nginx_public_port }};
+
+    server_name {{ ' '.join(vhost.hosts) }};
+
+    root {{app_dir}}/{{item.name}}/current/public;
+
+    access_log /var/log/nginx/{{item.name}}.access.log;
+
+    location / {
+      proxy_set_header X-Real-IP  $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect   off;
+      if (-f $request_filename) {
+        break;
+      }
+      if (!-f $request_filename) {
+        proxy_pass http://{{ item.name }};
+        break;
+      }
+    }
+  }
+
+  {% if 'cert' in vhost %}
+    server {
+      listen {{ nginx_ssl_public_port }};
+      server_name {{ ' '.join(vhost.hosts) }};
+
+      root {{app_dir}}/{{item.name}}/current/public;
+
+      access_log /var/log/nginx/{{item.name}}.access.log;
+
+      ssl on;
+
+      ssl_certificate     /etc/ssl/certs/{{ vhost.cert }}.crt;
+      ssl_certificate_key /etc/ssl/private/{{ vhost.cert }}.key;
+
+      ssl_session_timeout  5m;
+      ssl_protocols  SSLv2 SSLv3 TLSv1;
+      ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+      ssl_prefer_server_ciphers   on;
+
+      location / {
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_redirect   off;
+        if (-f $request_filename) {
+          break;
+        }
+        if (!-f $request_filename) {
+          proxy_pass http://{{ item.name }};
+          break;
+        }
+      }
+    }
+  {% endif %}
+{% endfor %}

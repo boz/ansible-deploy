@@ -2,28 +2,44 @@
 - hosts: default
   vars:
     postgresql_databases:
-      - name: testapp_1
-        password: testapp_1_password
-      - name: testapp_2
-        password: testapp_2_password
-
+      - name: nodeapp
+        password: nodeapp
+    supervisor:
+      conf_dir: "/etc/supervisor/conf.d"
+    applications:
+      - name: nodeapp
+        type: nodejs
+        deploy_key: test-github
+        vhosts:
+          - hosts: [ 'nodeapp.vagrant.dev' ]
+        web:
+          port: 3000
+        database:
+          username: nodeapp
+          password: nodeapp
+        repo:
+          source: git@github.com:boz/chef-deploy-webapp-nodejs-test.git
+          branch: master
   roles:
     - common
+    - supervisor
     - postgres-server
     - rsyslog
     - redis
+    - nginx-base
+    - app-nginx
+    - app-base
+    - app-nodejs
 
-  tasks:
-    - name: install common packages
-      action: apt name={{item}} state=installed
-      with_items:
-        - supervisor
-        - build-essential
-        - nginx-full
-        - ruby1.9.3
-        - libpq-dev
+# tasks:
+#   - name: install common packages
+#     action: apt name={{item}} state=installed
+#     with_items:
+#       - build-essential
+#       - ruby1.9.3
+#       - libpq-dev
 
-    - name: install common gems
-      action: gem name={{item}}
-      with_items:
-        - bundler
+#   - name: install common gems
+#     action: gem name={{item}}
+#     with_items:
+#       - bundler

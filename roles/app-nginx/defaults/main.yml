@@ -1,0 +1,3 @@
+---
+nginx_public_port: 80
+nginx_ssl_public_port: 443
