@@ -1,0 +1,12 @@
+---
+- name: install common packages
+  action: apt name={{item}} state=installed
+  with_items:
+    - build-essential
+    - ruby1.9.3
+    - libpq-dev
+
+- name: install common gems
+  action: gem name={{item}} state=present user_install=no
+  with_items:
+    - bundler

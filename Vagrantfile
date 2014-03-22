@@ -58,5 +58,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.playbook          = "playbook.yml"
     ansible.sudo              = true
     ansible.host_key_checking = false
+    ansible.groups = {
+      "nodeapp_app_servers"                => ["default"],
+      "railsapp_app_servers"               => ["default"],
+      "server_application_nodejs:children" => ["nodeapp_app_servers"],
+      "server_application_rails:children"  => ["railsapp_app_servers"],
+      "server_application:children"        => ["server_application_nodejs","server_application_rails"],
+      "server_postgres"                    => ["default"],
+      "server_redis"                       => ["default"],
+    }
   end
 end

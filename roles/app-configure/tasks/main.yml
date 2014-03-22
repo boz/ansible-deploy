@@ -1,0 +1,10 @@
+---
+- name: generate yml configuration
+  template: src=yaml.j2 dest={{ app_dir }}/{{ application.name }}/releases/pending/config/{{ item.name }}
+  with_items: files
+  when: item.format == "yml"
+
+- name: generate json configuration
+  template: src=json.j2 dest={{ app_dir }}/{{ application.name }}/releases/pending/config/{{ item.name }}
+  with_items: files
+  when: item.format == "json"

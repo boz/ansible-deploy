@@ -2,7 +2,6 @@
 - name: install configuration
   template:
     src=nginx-site.conf.j2
-    dest=/etc/nginx/sites-enabled/{{item.name}}.conf
+    dest=/etc/nginx/sites-enabled/{{application.name}}.conf
   notify:
     - reload nginx
-  with_items: applications

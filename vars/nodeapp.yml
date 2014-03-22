@@ -1,0 +1,19 @@
+---
+application:
+  name: nodeapp
+  deploy_key: test-github
+  vhosts:
+    - hosts: [ 'nodeapp.vagrant.dev' ]
+  web:
+    port: 3000
+  database:
+    username: "{{ databases.nodeapp.username }}"
+    password: "{{ databases.nodeapp.password }}"
+  redis:
+    host: localhost
+    port: 6379
+  commands:
+    start: "node app"
+  repo:
+    source: git@github.com:boz/chef-deploy-webapp-nodejs-test.git
+    branch: master

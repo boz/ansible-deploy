@@ -1,40 +1,40 @@
 ---
-- name: "create the database user"
+- name: create the database user
   postgresql_user:
-    name={{item.name}}
+    name={{ item.key }}
     role_attr_flags=NOSUPERUSER,NOCREATEDB,NOCREATEROLE,NOINHERIT,LOGIN
-    password={{item.password}}
+    password={{ item.value.password }}
   sudo_user: "{{ postgres_server_user }}"
-  with_items: postgresql_databases
+  with_dict: databases
 
-- name: "create databases"
+- name: create database
   postgresql_db:
-    name={{item.name}}
-    owner={{item.name}}
+    name={{ item.key }}
+    owner={{ item.key }}
   sudo: yes
   sudo_user: "{{ postgres_server_user }}"
-  with_items: postgresql_databases
+  with_dict: databases
 
-- name: "revoke access to database from public"
+- name: revoke access to database from public
   postgresql_privs:
-    db={{item.name}}
+    db={{ item.key }}
     state=absent
     priv=ALL
     type=database
-    obj={{item.name}}
+    obj={{ item.key }}
     role=public
   sudo: yes
   sudo_user: "{{ postgres_server_user }}"
-  with_items: postgresql_databases
+  with_dict: databases
 
-- name: "grant access to database to user"
+- name: grant access to database to user
   postgresql_privs:
-    db={{item.name}}
+    db={{ item.key }}
     priv=ALL
     type=schema
     obj=public
-    role={{item.name}}
+    role={{ item.key }}
     grant_option=yes
   sudo: yes
   sudo_user: "{{ postgres_server_user }}"
-  with_items: postgresql_databases
+  with_dict: databases

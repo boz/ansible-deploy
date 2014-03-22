@@ -1,0 +1,11 @@
+[program:{{ application.name }}]
+command       = bundle exec unicorn -c {{ app_dir }}/{{ application.name }}/shared/unicorn.rb
+process_name  = %(program_name)s
+stderr_syslog = true
+stdout_syslog = true
+directory     = {{ app_dir }}/{{ application.name }}/current
+autostart     = false
+autorestart   = true
+startsecs     = 10
+startretries  = 3
+environment   = RAILS_ENV="production"

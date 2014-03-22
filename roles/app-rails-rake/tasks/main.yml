@@ -1,0 +1,8 @@
+---
+- name: rake
+  command: >
+    bundle exec rake {{ item }}
+    chdir={{ app_dir }}/{{ application.name }}/releases/pending
+  with_items: commands
+  environment:
+    RAILS_ENV: production

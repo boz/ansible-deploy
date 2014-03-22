@@ -1,0 +1,17 @@
+---
+base_dir:         "../../.."
+files_dir:        "{{base_dir}}/files"
+private_keys_dir: "{{files_dir}}/private_keys"
+public_keys_dir:  "{{files_dir}}/public_keys"
+
+databases:
+  nodeapp:
+    username: nodeapp
+    password: nodeapp
+  railsapp:
+    username: nodeapp
+    password: nodeapp
+    port:     5432
+
+supervisor:
+  conf_dir: "/etc/supervisor/conf.d"

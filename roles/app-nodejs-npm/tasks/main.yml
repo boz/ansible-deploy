@@ -1,0 +1,4 @@
+---
+- name: npm install
+  npm: path={{app_dir}}/{{application.name}}/releases/pending
+       state=present

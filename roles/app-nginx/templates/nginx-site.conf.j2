@@ -1,16 +1,16 @@
-upstream {{ item.name }} {
-  server localhost:{{item.web.port}};
+upstream {{ application.name }} {
+  server localhost:{{application.web.port}};
 }
 
-{% for vhost in item.vhosts %}
+{% for vhost in application.vhosts %}
   server {
     listen {{ nginx_public_port }};
 
     server_name {{ ' '.join(vhost.hosts) }};
 
-    root {{app_dir}}/{{item.name}}/current/public;
+    root {{app_dir}}/{{application.name}}/current/public;
 
-    access_log /var/log/nginx/{{item.name}}.access.log;
+    access_log /var/log/nginx/{{application.name}}.access.log;
 
     location / {
       proxy_set_header X-Real-IP  $remote_addr;
@@ -21,7 +21,7 @@ upstream {{ item.name }} {
         break;
       }
       if (!-f $request_filename) {
-        proxy_pass http://{{ item.name }};
+        proxy_pass http://{{ application.name }};
         break;
       }
     }
@@ -32,9 +32,9 @@ upstream {{ item.name }} {
       listen {{ nginx_ssl_public_port }};
       server_name {{ ' '.join(vhost.hosts) }};
 
-      root {{app_dir}}/{{item.name}}/current/public;
+      root {{app_dir}}/{{application.name}}/current/public;
 
-      access_log /var/log/nginx/{{item.name}}.access.log;
+      access_log /var/log/nginx/{{application.name}}.access.log;
 
       ssl on;
 
@@ -56,7 +56,7 @@ upstream {{ item.name }} {
           break;
         }
         if (!-f $request_filename) {
-          proxy_pass http://{{ item.name }};
+          proxy_pass http://{{ application.name }};
           break;
         }
       }

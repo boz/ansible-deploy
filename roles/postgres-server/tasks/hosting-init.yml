@@ -1,5 +1,5 @@
 ---
-- name: "revoke access to database postgres from public"
+- name: revoke access to database postgres from public
   postgresql_privs:
     db=postgres
     state=absent
@@ -9,7 +9,7 @@
     role=public
   sudo_user: "{{ postgres_server_user }}"
 
-- name: "revoke access to database template1 from public"
+- name: revoke access to database template1 from public
   postgresql_privs:
     db=template1
     state=absent
@@ -19,7 +19,7 @@
     role=public
   sudo_user: "{{ postgres_server_user }}"
 
-- name: "revoke access to schema public from public"
+- name: revoke access to schema public from public
   postgresql_privs:
     db=template1
     state=absent
@@ -29,7 +29,7 @@
     role=public
   sudo_user: "{{ postgres_server_user }}"
 
-- name: "grant access to schema public to postgres"
+- name: grant access to schema public to postgres
   postgresql_privs:
     db=template1
     priv=ALL
@@ -37,3 +37,4 @@
     obj=public
     role="{{postgres_server_user}}"
   sudo_user: "{{ postgres_server_user }}"
+

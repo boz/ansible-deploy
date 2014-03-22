@@ -1,45 +1,91 @@
 ---
-- hosts: default
-  vars:
-    postgresql_databases:
-      - name: nodeapp
-        password: nodeapp
-    supervisor:
-      conf_dir: "/etc/supervisor/conf.d"
-    applications:
-      - name: nodeapp
-        type: nodejs
-        deploy_key: test-github
-        vhosts:
-          - hosts: [ 'nodeapp.vagrant.dev' ]
-        web:
-          port: 3000
-        database:
-          username: nodeapp
-          password: nodeapp
-        repo:
-          source: git@github.com:boz/chef-deploy-webapp-nodejs-test.git
-          branch: master
+- hosts: all
   roles:
     - common
-    - supervisor
-    - postgres-server
     - rsyslog
+  tags: ['provision']
+
+- hosts: server_postgres
+  roles:
+    - postgres-server
+  tags: ['provision']
+
+- hosts: server_redis
+  roles:
     - redis
-    - nginx-base
-    - app-nginx
+  tags: ['provision']
+
+- hosts: server_application
+  roles:
     - app-base
-    - app-nodejs
+    - supervisor
+    - nginx-base
+  tags: ['provision','app']
 
-# tasks:
-#   - name: install common packages
-#     action: apt name={{item}} state=installed
-#     with_items:
-#       - build-essential
-#       - ruby1.9.3
-#       - libpq-dev
+- hosts: server_application_nodejs
+  roles:
+    - app-nodejs-base
+  tags: ['provision','app','nodejs']
 
-#   - name: install common gems
-#     action: gem name={{item}}
-#     with_items:
-#       - bundler
+- hosts: server_postgres
+  roles:
+    - postgres-server-host
+  tags: ['provision','app']
+
+- hosts: server_application_rails
+  roles:
+    - app-rails-base
+  tags: ['provision','app','rails']
+
+# nodeapp playbook
+- hosts: nodeapp_app_servers
+  roles:
+    - app-checkout-pending
+    - role: app-configure
+      files:
+        - name: http.json
+          format: json
+          content:
+            port: "{{ application.web.port }}"
+        - name: redis.json
+          format: json
+          content:
+            host: "{{ application.redis.host }}"
+            port: "{{ application.redis.port }}"
+    - app-nodejs-npm
+    - app-nginx
+    - app-checkout-finalize
+    - app-nodejs-finalize
+  tags: ['deploy','app','app-nodeapp']
+  vars_files:
+    - "vars/nodeapp.yml"
+
+# railsapp playbook
+- hosts: railsapp_app_servers
+  roles:
+    - app-checkout-pending
+    - role: app-configure
+      files:
+        - name: database.yml
+          format: yml
+          content:
+            production:
+              host:     "{{ application.database.host     }}"
+              port:     "{{ application.database.port     }}"
+              username: "{{ application.database.username }}"
+              password: "{{ application.database.password }}"
+              database: "{{ application.database.database }}"
+              adapter:  "{{ application.database.adapter  }}"
+              encoding: "{{ application.database.encoding }}"
+              pool:     "{{ application.database.pool     }}"
+    - app-rails-bundle
+    - role: app-rails-rake
+      commands:
+        - "assets:precompile"
+        - "db:migrate"
+    - app-rails-unicorn
+    - app-nginx
+    - app-checkout-finalize
+    - app-rails-finalize
+  vars_files:
+    - "vars/railsapp.yml"

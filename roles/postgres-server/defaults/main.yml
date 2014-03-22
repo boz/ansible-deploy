@@ -1,5 +1,5 @@
 ---
-postgres_server_user:    postgres
+postgres_server_user: postgres
 
 # postgresql.conf.j2
 postgres_server_confdir: "/etc/postgresql/9.3/main"

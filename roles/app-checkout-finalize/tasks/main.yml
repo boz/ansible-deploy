@@ -1,0 +1,11 @@
+---
+- name: find current revision directory
+  command: readlink {{app_dir}}/{{application.name}}/releases/pending
+  register: release_pending
+
+- name: install current symlink
+  file:
+    state=link
+    force=yes
+    src={{release_pending.stdout}}
+    dest={{app_dir}}/{{application.name}}/current

@@ -1,0 +1,38 @@
+- name: create base directories
+  file: path={{app_dir}} state=directory
+
+- name: create application directories
+  file:
+    path={{app_dir}}/{{application.name}}/{{item}} state=directory
+  with_items:
+    - ['bin', 'shared', 'shared/pids', 'releases']
+
+- name: create git ssh script
+  copy: src=git-ssh.sh dest={{app_dir}}/{{application.name}}/bin/git-ssh.sh
+
+- name: copy ssh private key
+  copy: src={{private_keys_dir}}/{{application.deploy_key}}
+       dest={{app_dir}}/{{application.name}}/bin/deploy.key
+  when: application.deploy_key is defined
+
+- name: get head revision
+  raw:  GIT_SSH={{app_dir}}/{{application.name}}/bin/git-ssh.sh git ls-remote "{{application.repo.source}}" "{{application.repo.branch}}" 2>/dev/null | grep -v "Permanently added" | cut -f1
+  register: application_revision
+
+- name: checkout head revision
+  git:
+    depth=1
+    repo={{application.repo.source}}
+    dest={{app_dir}}/{{application.name}}/releases/{{application_revision.stdout}}
+    version={{application_revision.stdout}}
+    key_file={{app_dir}}/{{application.name}}/bin/deploy.key
+
+- name: create pending release link
+  file: state=link
+        force=yes
+        src={{app_dir}}/{{application.name}}/releases/{{application_revision.stdout}}
+        dest={{app_dir}}/{{application.name}}/releases/pending
+
+- name: create VERSION file
+  copy: content={{application_revision.stdout}}
+        dest={{app_dir}}/{{application.name}}/releases/pending/VERSION

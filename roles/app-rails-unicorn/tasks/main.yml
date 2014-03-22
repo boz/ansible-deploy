@@ -1,0 +1,3 @@
+---
+- name: install unicorn config
+  template: src=unicorn.rb.j2 dest={{ app_dir }}/{{ application.name }}/shared/unicorn.rb

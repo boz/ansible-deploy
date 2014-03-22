@@ -4,16 +4,3 @@
 
 # http://wiki.postgresql.org/wiki/Shared_Database_Hosting
 - include: hosting-init.yml
-
-- name: install databases and users
-  include: hosting-db.yml
-
-# - name:     testapp
-#   password: testapp
-# - name:     testapp2
-#   password: testapp2
-
-# - include: hosting-db.yml
-#   vars:
-#     name: testapp
-#     password: testapp

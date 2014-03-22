@@ -1,0 +1,8 @@
+---
+- name: bundle install
+  command: >
+    bundle install --without development test --deployment --path {{ app_dir }}/{{ application.name }}/shared/bundle
+    chdir={{ app_dir }}/{{ application.name }}/releases/pending
+  environment:
+    GIT_SSH: "{{ app_dir }}/{{ application.name }}/bin/git-ssh.sh"
+    RAILS_ENV: production

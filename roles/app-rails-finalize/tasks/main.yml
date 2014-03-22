@@ -1,0 +1,11 @@
+---
+- name: create supervisor launcher
+  template:
+    src=supervisor.conf.j2
+    dest={{ supervisor.conf_dir }}/{{ application.name }}.conf
+
+- name: load supervisor launcher
+  supervisorctl: name={{ application.name }} state=present
+
+- name: restart application supervisor
+  supervisorctl: name={{ application.name }} state=restarted
