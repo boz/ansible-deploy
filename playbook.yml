@@ -41,17 +41,7 @@
 - hosts: nodeapp_app_servers
   roles:
     - app-checkout-pending
-    - role: app-configure
-      files:
-        - name: http.json
-          format: json
-          content:
-            port: "{{ application.web.port }}"
-        - name: redis.json
-          format: json
-          content:
-            host: "{{ application.redis.host }}"
-            port: "{{ application.redis.port }}"
+    - app-configure
     - app-nodejs-npm
     - app-nginx
     - app-checkout-finalize
@@ -64,20 +54,7 @@
 - hosts: railsapp_app_servers
   roles:
     - app-checkout-pending
-    - role: app-configure
-      files:
-        - name: database.yml
-          format: yml
-          content:
-            production:
-              host:     "{{ application.database.host     }}"
-              port:     "{{ application.database.port     }}"
-              username: "{{ application.database.username }}"
-              password: "{{ application.database.password }}"
-              database: "{{ application.database.database }}"
-              adapter:  "{{ application.database.adapter  }}"
-              encoding: "{{ application.database.encoding }}"
-              pool:     "{{ application.database.pool     }}"
+    - app-configure
     - app-rails-bundle
     - role: app-rails-rake
       commands:

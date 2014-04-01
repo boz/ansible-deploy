@@ -7,15 +7,19 @@ application:
     - hosts: [ 'railsapp.vagrant.dev' ]
   web:
     port: 3001
-  database:
-    host:     "localhost"
-    port:     "{{ databases.railsapp.port     }}"
-    username: "{{ databases.railsapp.username }}"
-    password: "{{ databases.railsapp.password }}"
-    database: "{{ databases.railsapp.username }}"
-    adapter:  postgresql
-    encoding: unicode
-    pool:     20
   repo:
     source: git@github.com:boz/chef-deploy-webapp-rails-test.git
     branch: master
+  config:
+    - name: database.yml
+      format: yml
+      content:
+        production:
+          host:     "localhost"
+          port:     "{{ databases.railsapp.port     }}"
+          username: "{{ databases.railsapp.username }}"
+          password: "{{ databases.railsapp.password }}"
+          database: "{{ databases.railsapp.username }}"
+          adapter:  postgresql
+          encoding: unicode
+          pool:     20

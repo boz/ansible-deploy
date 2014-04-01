@@ -6,14 +6,18 @@ application:
     - hosts: [ 'nodeapp.vagrant.dev' ]
   web:
     port: 3000
-  database:
-    username: "{{ databases.nodeapp.username }}"
-    password: "{{ databases.nodeapp.password }}"
-  redis:
-    host: localhost
-    port: 6379
   commands:
     start: "node app"
   repo:
     source: git@github.com:boz/chef-deploy-webapp-nodejs-test.git
     branch: master
+  config:
+    - name: http.json
+      format: json
+      content:
+        port: 3000
+    - name: redis.json
+      format: json
+      content:
+        host: localhost
+        port: 6379
