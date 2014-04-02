@@ -1,7 +1,6 @@
 ---
 application:
   name: railsapp
-  type: nodejs
   deploy_key: test-github
   vhosts:
     - hosts: [ 'railsapp.vagrant.dev' ]
@@ -15,7 +14,7 @@ application:
       format: yml
       content:
         production:
-          host:     "localhost"
+          host:     "{{ databases.railsapp.host     }}"
           port:     "{{ databases.railsapp.port     }}"
           username: "{{ databases.railsapp.username }}"
           password: "{{ databases.railsapp.password }}"

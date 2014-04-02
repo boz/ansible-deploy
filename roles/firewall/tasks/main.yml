@@ -1,0 +1,4 @@
+---
+- name: allow connections to port
+  command: ufw allow {{ item.port }}
+  with_items: rules

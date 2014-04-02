@@ -8,11 +8,17 @@
 - hosts: server_postgres
   roles:
     - postgres-server
+    - role: firewall-group
+      port: "{{ postgres_server.port }}"
+      group: server_application
   tags: ['provision']
 
 - hosts: server_redis
   roles:
     - redis
+    - role: firewall-group
+      port: "{{ redis_server.port }}"
+      group: server_application
   tags: ['provision']
 
 - hosts: server_application
@@ -20,6 +26,10 @@
     - app-base
     - supervisor
     - nginx-base
+    - role: firewall
+      rules:
+        - port: "80/tcp"
+        - port: "443/tcp"
   tags: ['provision','app']
 
 - hosts: server_application_nodejs

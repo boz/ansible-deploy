@@ -7,3 +7,9 @@
   with_items:
     - vim-nox
     - screen
+
+- name: allow ssh
+  command: ufw allow ssh/tcp
+
+- name: enable ufw
+  shell: echo 'y' | ufw enable

@@ -7,8 +7,8 @@ postgres_server_datadir: "/var/lib/postgresql/9.3/main"
 postgres_server_pidfile: "/var/run/postgresql/9.3-main.pid"
 
 # postgresql.conf.connections.j2
-postgres_server_listen_addresses: 'localhost'
-postgres_server_port: 5432
+postgres_server_listen_addresses: "{{ postgres_server.host | default('localhost') }}"
+postgres_server_port: "{{ postgres_server.port | default('5432') }}"
 
 # postgresql.conf.resource-usage.j2
 # postgresql.conf.wal.j2

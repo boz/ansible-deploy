@@ -4,14 +4,29 @@ files_dir:        "{{base_dir}}/files"
 private_keys_dir: "{{files_dir}}/private_keys"
 public_keys_dir:  "{{files_dir}}/public_keys"
 
+postgres_server:
+  host: "{{ hostvars[groups['server_postgres'][0]].ansible_default_ipv4.address }}"
+  port: 5432
+
+redis_server:
+  host: "{{ hostvars[groups['server_redis'][0]].ansible_default_ipv4.address }}"
+  port: 6380
+
 databases:
   nodeapp:
+    host:     "{{ postgres_server.host }}"
+    port:     "{{ postgres_server.port }}"
     username: nodeapp
     password: nodeapp
   railsapp:
-    username: nodeapp
-    password: nodeapp
-    port:     5432
+    host:     "{{ postgres_server.host }}"
+    port:     "{{ postgres_server.port }}"
+    username: railsapp
+    password: railsapp
 
 supervisor:
   conf_dir: "/etc/supervisor/conf.d"
+
+firewall_allow:
+  - port: 22
+

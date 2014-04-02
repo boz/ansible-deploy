@@ -1,0 +1,4 @@
+---
+- name: allow connections from group
+  command: ufw allow from {{hostvars[item].ansible_default_ipv4.address}} to any port {{ port }}
+  with_items: groups[group]

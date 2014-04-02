@@ -16,7 +16,7 @@
   when: application.deploy_key is defined
 
 - name: get head revision
-  raw:  GIT_SSH={{app_dir}}/{{application.name}}/bin/git-ssh.sh git ls-remote "{{application.repo.source}}" "{{application.repo.branch}}" 2>/dev/null | grep -v "Permanently added" | cut -f1
+  raw: GIT_SSH={{app_dir}}/{{application.name}}/bin/git-ssh.sh git ls-remote "{{application.repo.source}}" "{{application.repo.branch}}" 2>/dev/null | grep -v "Permanently added" | cut -f1
   register: application_revision
 
 - name: checkout head revision
@@ -26,6 +26,7 @@
     dest={{app_dir}}/{{application.name}}/releases/{{application_revision.stdout}}
     version={{application_revision.stdout}}
     key_file={{app_dir}}/{{application.name}}/bin/deploy.key
+    accept_hostkey=True
 
 - name: create pending release link
   file: state=link
