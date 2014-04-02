@@ -1,5 +1,6 @@
 [program:{{ application.name }}]
 command       = {{ application.commands.start }}
+user          = {{ deploy.username }}
 process_name  = %(program_name)s
 stderr_syslog = true
 stdout_syslog = true

@@ -5,7 +5,15 @@
   file:
     path={{app_dir}}/{{application.name}}/{{item}} state=directory
   with_items:
-    - ['bin', 'shared', 'shared/pids', 'releases']
+    - ['bin', 'shared', 'releases']
+
+- name: create deploy-owned directories
+  file:
+    path={{app_dir}}/{{application.name}}/shared/{{item}}
+    owner={{deploy.username}}
+    state=directory
+  with_items:
+    - [ 'log', 'pids' ]
 
 - name: create git ssh script
   copy: src=git-ssh.sh dest={{app_dir}}/{{application.name}}/bin/git-ssh.sh
@@ -34,6 +42,18 @@
         src={{app_dir}}/{{application.name}}/releases/{{application_revision.stdout}}
         dest={{app_dir}}/{{application.name}}/releases/pending
 
+- name: remove deploy-owned directories for symlinking
+  raw: "[ -d '{{app_dir}}/{{application.name}}/releases/pending/{{ item }}' ] && rm -rf {{app_dir}}/{{application.name}}/releases/pending/{{ item }}; true"
+  with_items: [ 'log' ]
+
+- name: symlink deploy-owned directories
+  file: state=link
+        force=yes
+        src={{ app_dir }}/{{ application.name }}/shared/{{ item }}
+        dest={{ app_dir }}/{{application.name}}/releases/pending/{{ item }}
+  with_items: [ 'log' ]
+
 - name: create VERSION file
   copy: content={{application_revision.stdout}}
         dest={{app_dir}}/{{application.name}}/releases/pending/VERSION
+

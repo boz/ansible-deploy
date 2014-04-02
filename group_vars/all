@@ -4,6 +4,10 @@ files_dir:        "{{base_dir}}/files"
 private_keys_dir: "{{files_dir}}/private_keys"
 public_keys_dir:  "{{files_dir}}/public_keys"
 
+deploy:
+  username: deploy
+  public_keys: "{{public_keys_dir}}/deploy/*.pub"
+
 postgres_server:
   host: "{{ hostvars[groups['server_postgres'][0]].ansible_default_ipv4.address }}"
   port: 5432
@@ -26,7 +30,3 @@ databases:
 
 supervisor:
   conf_dir: "/etc/supervisor/conf.d"
-
-firewall_allow:
-  - port: 22
-

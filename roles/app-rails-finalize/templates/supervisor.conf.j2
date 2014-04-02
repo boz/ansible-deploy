@@ -1,4 +1,5 @@
 [program:{{ application.name }}]
+user          = {{ deploy.username }}
 command       = bundle exec unicorn -c {{ app_dir }}/{{ application.name }}/shared/unicorn.rb
 process_name  = %(program_name)s
 stderr_syslog = true

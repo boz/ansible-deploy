@@ -3,9 +3,9 @@
   apt: name=git
 
 - name: create deploy user
-  user: name=deploy state=present shell=/bin/bash
+  user: name={{ deploy.username }} state=present shell=/bin/bash
 
 - name: install deploy ssh keys
-  authorized_key: user=deploy key="{{lookup('file',item)}}"
+  authorized_key: user={{ deploy.username }} key="{{lookup('file',item)}}"
   with_fileglob:
-    - "{{public_keys_dir}}/deploy/*.pub"
+    - "{{ deploy.public_keys }}"
