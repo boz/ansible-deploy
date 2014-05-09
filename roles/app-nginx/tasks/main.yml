@@ -1,4 +1,17 @@
 ---
+
+- name: install certificates
+  copy: dest=/etc/ssl/certs/{{ item.cert }}.crt
+        src={{cert_dir}}/{{ item.cert }}.crt
+  with_items: application.vhosts
+  when: item.cert is defined
+
+- name: install private keys
+  copy: dest=/etc/ssl/private/{{ item.cert }}.key
+        src={{cert_dir}}/{{ item.cert }}.key
+  with_items: application.vhosts
+  when: item.cert is defined
+
 - name: install configuration
   template:
     src=nginx-site.conf.j2

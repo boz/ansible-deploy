@@ -16,7 +16,7 @@ brew install ansible
 sudo pip install pycurl
 ```
 
-## Crypto Keys
+## Access Keys
 
 ### Github deploy key:
 
@@ -36,7 +36,14 @@ example:
 $ cp ~/.ssh/id_rsa.pub files/public_keys/deploy/me.pub
 ```
 
-###
+## Hostname Configuration
+
+Add these lines to the end of `/etc/hosts` on your system.
+
+```
+192.168.33.10 nodeapp.vagrant.dev
+192.168.33.10 railsapp.vagrant.dev
+```
 
 ## Run Vagrant
 

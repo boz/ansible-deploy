@@ -4,6 +4,7 @@ application:
   deploy_key: github-deploy
   vhosts:
     - hosts: [ 'nodeapp.vagrant.dev' ]
+      cert: nodeapp.vagrant.dev
   web:
     port: 3000
   commands:

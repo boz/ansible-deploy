@@ -1,6 +1,9 @@
 vagrant_ansible_*
 .vagrant
 
+files/private_keys/*
+files/public_keys/*
+
 ## vim
 *~
 *.swp

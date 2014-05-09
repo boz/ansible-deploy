@@ -1,0 +1,16 @@
+---
+- hosts: railsapp_app_servers
+  roles:
+    - app-checkout-pending
+    - app-configure
+    - app-rails-bundle
+    - role: app-rails-rake
+      commands:
+        - "assets:precompile"
+        - "db:migrate"
+    - app-rails-unicorn
+    - app-nginx
+    - app-checkout-finalize
+    - app-rails-finalize
+  vars_files:
+    - "{{ playbook_dir }}/vars/railsapp.yml"

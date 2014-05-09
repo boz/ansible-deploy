@@ -1,0 +1,13 @@
+---
+- hosts: nodeapp_app_servers
+  roles:
+    - app-checkout-pending
+    - app-configure
+    - app-nodejs-npm
+    - app-nginx
+    - app-checkout-finalize
+    - app-nodejs-finalize
+  tags: ['deploy','app','app-nodeapp']
+  vars_files:
+    - "vars/nodeapp.yml"
+

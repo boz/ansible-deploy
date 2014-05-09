@@ -47,32 +47,5 @@
     - app-rails-base
   tags: ['provision','app','rails']
 
-# nodeapp playbook
-- hosts: nodeapp_app_servers
-  roles:
-    - app-checkout-pending
-    - app-configure
-    - app-nodejs-npm
-    - app-nginx
-    - app-checkout-finalize
-    - app-nodejs-finalize
-  tags: ['deploy','app','app-nodeapp']
-  vars_files:
-    - "vars/nodeapp.yml"
-
-# railsapp playbook
-- hosts: railsapp_app_servers
-  roles:
-    - app-checkout-pending
-    - app-configure
-    - app-rails-bundle
-    - role: app-rails-rake
-      commands:
-        - "assets:precompile"
-        - "db:migrate"
-    - app-rails-unicorn
-    - app-nginx
-    - app-checkout-finalize
-    - app-rails-finalize
-  vars_files:
-    - "vars/railsapp.yml"
+- include: play-nodeapp.yml
+- include: play-railsapp.yml

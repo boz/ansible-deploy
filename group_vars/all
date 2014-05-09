@@ -3,6 +3,7 @@ base_dir:         "../../.."
 files_dir:        "{{base_dir}}/files"
 private_keys_dir: "{{files_dir}}/private_keys"
 public_keys_dir:  "{{files_dir}}/public_keys"
+cert_dir:         "{{files_dir}}/certs"
 
 deploy:
   username: deploy
