@@ -16,6 +16,28 @@ brew install ansible
 sudo pip install pycurl
 ```
 
+## Crypto Keys
+
+### Github deploy key:
+
+Place a private SSH key used for checking out code from github in `files/private_keys/github-deploy`.
+
+example:
+```shell
+$ cp ~/.ssh/id_rsa files/private_keys/github-deploy
+```
+
+### SSH Keys for deploy user (optional):
+
+Place public keys for accessing the `deploy` user over ssh in `files/public_keys/deploy`.
+
+example:
+```shell
+$ cp ~/.ssh/id_rsa.pub files/public_keys/deploy/me.pub
+```
+
+###
+
 ## Run Vagrant
 
 ### bring up
@@ -23,7 +45,6 @@ sudo pip install pycurl
 ```shell
 vagrant up
 ```
-
 ### provision running instance
 
 ```shell
