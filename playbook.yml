@@ -7,6 +7,7 @@
 
 - hosts: server_postgres
   roles:
+    - postgres-server-archive
     - postgres-server
     - role: firewall-group
       port: "{{ postgres_server.port }}"

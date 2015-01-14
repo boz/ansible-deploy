@@ -4,7 +4,7 @@
 
 # - Settings -
 
-#wal_level = minimal			# minimal, archive, or hot_standby
+wal_level = {{ postgres_wal_level }} # minimal, archive, or hot_standby
 					# (change requires restart)
 #fsync = on				# turns forced synchronization on or off
 #synchronous_commit = on		# synchronization level;
@@ -33,12 +33,13 @@
 
 # - Archiving -
 
-#archive_mode = off		# allows archiving to be done
-				# (change requires restart)
-#archive_command = ''		# command to use to archive a logfile segment
+archive_mode = {{ postgres_archive_mode }}
+archive_command = '{{ postgres_archive_command }}'
+
 				# placeholders: %p = path of file to archive
 				#               %f = file name only
 				# e.g. 'test ! -f /mnt/server/archivedir/%f && cp %p /mnt/server/archivedir/%f'
-#archive_timeout = 0		# force a logfile segment switch after this
+archive_timeout = {{ postgres_archive_timeout }}
+		# force a logfile segment switch after this
 				# number of seconds; 0 disables
 

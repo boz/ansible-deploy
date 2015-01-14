@@ -11,7 +11,14 @@ postgres_server_listen_addresses: "{{ postgres_server.host | default('localhost'
 postgres_server_port: "{{ postgres_server.port | default('5432') }}"
 
 # postgresql.conf.resource-usage.j2
+
 # postgresql.conf.wal.j2
+
+postgres_wal_level: "minimal"
+postgres_archive_mode: "off"
+postgres_archive_command: ""
+postgres_archive_timeout: 0
+
 # postgresql.conf.replication.j2
 # postgresql.conf.tuning.j2
 # postgresql.conf.logging.j2

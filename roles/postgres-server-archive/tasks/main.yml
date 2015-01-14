@@ -1,0 +1,14 @@
+---
+- name: install pip
+  apt: name=python-pip
+
+- name: install gevent
+  apt: name=python-gevent
+
+- name: install daemontools
+  apt: name=daemontools
+
+- pip: name=wal-e
+
+- include: install.yml
+- include: config.yml
