@@ -16,11 +16,14 @@
     - [ 'log', 'pids' ]
 
 - name: create git ssh script
-  copy: src=git-ssh.sh dest={{app_dir}}/{{application.name}}/bin/git-ssh.sh
+  copy: src=git-ssh.sh
+       dest={{app_dir}}/{{application.name}}/bin/git-ssh.sh
+       mode=0755
 
 - name: copy ssh private key
   copy: src={{private_keys_dir}}/{{application.deploy_key}}
        dest={{app_dir}}/{{application.name}}/bin/deploy.key
+       mode=0600
   when: application.deploy_key is defined
 
 - name: get head revision
