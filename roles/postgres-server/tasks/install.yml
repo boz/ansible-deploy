@@ -13,7 +13,7 @@
     repo="deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_lsb.codename}}-pgdg main"
 
 - name: install postgresql
-  apt: name=postgresql-9.3
+  apt: name="{{ postgres_package }}"
 
 - name: install psycopg2
   apt: name=python-psycopg2

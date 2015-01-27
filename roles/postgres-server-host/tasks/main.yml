@@ -4,6 +4,7 @@
     name={{ item.key }}
     role_attr_flags=NOSUPERUSER,NOCREATEDB,NOCREATEROLE,NOINHERIT,LOGIN
     password={{ item.value.password }}
+  sudo: yes
   sudo_user: "{{ postgres_server_user }}"
   with_dict: databases
 

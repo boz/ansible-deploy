@@ -1,6 +1,8 @@
 ---
 postgres_server_user: postgres
 
+postgres_package: "postgresql-9.3"
+
 # postgresql.conf.j2
 postgres_server_confdir: "/etc/postgresql/9.3/main"
 postgres_server_datadir: "/var/lib/postgresql/9.3/main"
