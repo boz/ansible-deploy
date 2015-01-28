@@ -1,9 +1,12 @@
 ---
-base_dir:         "../../.."
+base_dir:         "{{ inventory_dir }}"
 files_dir:        "{{base_dir}}/files"
 private_keys_dir: "{{files_dir}}/private_keys"
 public_keys_dir:  "{{files_dir}}/public_keys"
 cert_dir:         "{{files_dir}}/certs"
+
+supervisor:
+  conf_dir: "/etc/supervisor/conf.d"
 
 deploy:
   username: deploy
@@ -29,5 +32,3 @@ databases:
     username: railsapp
     password: railsapp
 
-supervisor:
-  conf_dir: "/etc/supervisor/conf.d"

@@ -13,4 +13,4 @@
     - app-checkout-finalize
     - app-rails-finalize
   vars_files:
-    - "{{ playbook_dir }}/vars/railsapp.yml"
+    - "{{ playbook_dir }}/apps/railsapp.yml"

@@ -1,8 +1,10 @@
 vagrant_ansible_*
 .vagrant
 
-files/private_keys/*
-files/public_keys/*
+environments/staging
+environments/production
+environments/vagrant/files/private_keys/*
+environments/vagrant/files/public_keys/*
 
 ## vim
 *~

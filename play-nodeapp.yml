@@ -9,5 +9,5 @@
     - app-nodejs-finalize
   tags: ['deploy','app','app-nodeapp']
   vars_files:
-    - "vars/nodeapp.yml"
+    - "{{ playbook_dir }}/apps/nodeapp.yml"
 

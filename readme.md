@@ -20,20 +20,20 @@ sudo pip install pycurl
 
 ### Github deploy key:
 
-Place a private SSH key used for checking out code from github in `files/private_keys/github-deploy`.
+Place a private SSH key used for checking out code from github in `environments/vagrant/files/private_keys/github-deploy`.
 
 example:
 ```shell
-$ cp ~/.ssh/id_rsa files/private_keys/github-deploy
+$ cp ~/.ssh/id_rsa environments/vagrant/files/private_keys/github-deploy
 ```
 
 ### SSH Keys for deploy user (optional):
 
-Place public keys for accessing the `deploy` user over ssh in `files/public_keys/deploy`.
+Place public keys for accessing the `deploy` user over ssh in `environments/vagrant/files/public_keys/deploy`.
 
 example:
 ```shell
-$ cp ~/.ssh/id_rsa.pub files/public_keys/deploy/me.pub
+$ cp ~/.ssh/id_rsa.pub environments/vagrant/files/public_keys/deploy/me.pub
 ```
 
 ## Hostname Configuration
@@ -67,5 +67,5 @@ vagrant destroy -f
 # Notes
 find all of the variables on the host
 ```shell
-ansible all -m setup -i vagrant_ansible_inventory_default --user=vagrant --private-key=~/.vagrant.d/insecure_private_key
+ansible all -m setup -i environments/vagrant/inventory --user=vagrant --private-key=~/.vagrant.d/insecure_private_key
 ```
